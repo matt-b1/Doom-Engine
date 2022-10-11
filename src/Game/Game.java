@@ -1,5 +1,7 @@
 package Game;
 
+import Game.graphics.Screen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -18,8 +20,10 @@ public class Game extends Canvas implements Runnable {
     public static final BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     public static final int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
-    public Game() {
+    private Screen screen;
 
+    public Game() {
+        screen = new Screen(WIDTH, HEIGHT);
     }
 
     public void start(){
@@ -71,14 +75,17 @@ public class Game extends Canvas implements Runnable {
         for (int i = 0; i < pixels.length; i++) {
             pixels[i] = 0;
         }
-
+        screen.render();
+        for (int i = 0; i <pixels.length; i++) {
+            pixels[i] = screen.pixels[i];
+        }
         g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
         g.dispose();
         bs.show();
     }
 
     public void update() {
-
+        screen.update();
     }
 
     public void stop() {
